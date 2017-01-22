@@ -21,9 +21,9 @@ public class VerseTest {
                         "/i/"
                 },
                 {
-                        "Je sors ma bite comme le marteau de Tor /or/",
-                        "Je sors ma bite comme le marteau de Tor",
-                        "/or/"
+                        "Je brandis mon arme comme Tor son marteau /o/",
+                        "Je brandis mon arme comme Tor son marteau",
+                        "/o/"
                 }
         });
     }
