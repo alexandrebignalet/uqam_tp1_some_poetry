@@ -73,7 +73,8 @@ public class SomePoetry {
         rhymesSchemaInput = scanner.nextLine();
         while (rhymesSchemaInput.equals("") && !stanzaChoosen.hasThisRhymesSchema(rhymesSchemaInput)) {
             if(!rhymesSchemaInput.equals("")) {
-                System.out.println("Wrong ! This stanza hasn't this rhyme schema: " + rhymesSchemaInput + " but this one: " + stanzaChoosen.getRhymesSchema());
+                System.out.println("Wrong ! This stanza hasn't this rhyme schema: " + rhymesSchemaInput
+                        + " but this one: " + stanzaChoosen.getRhymesSchema());
             }
             rhymesSchemaInput = scanner.nextLine();
         }
