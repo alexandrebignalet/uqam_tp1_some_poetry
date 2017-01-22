@@ -67,8 +67,8 @@ public class PoemFactoryTest {
     public void testCreate() {
         Poem poemFromFactory = new PoemFactory().create(this.expectedName, this.expectedAuthor, this.expectedStanzas);
 
-        assertEquals(this.expectedName, poemFromFactory.getAuthor());
-        assertEquals(this.expectedAuthor, poemFromFactory.getName());
+        assertEquals(this.expectedName, poemFromFactory.getName());
+        assertEquals(this.expectedAuthor, poemFromFactory.getAuthor());
         assertEquals(this.expectedStanzas, poemFromFactory.getStanzas());
     }
 

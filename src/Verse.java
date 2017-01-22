@@ -1,5 +1,3 @@
-import javax.xml.bind.ValidationEvent;
-import javax.xml.bind.ValidationException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
