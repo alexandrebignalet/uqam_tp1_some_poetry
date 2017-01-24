@@ -11,16 +11,16 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
-public class PoemFactoryTest {
+public class PoemBuilderTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         ArrayList<Verse> v2 = new ArrayList<>();
-        v2.add(new Verse("Tu as besoin d'azur /ur/"));
-        v2.add(new Verse("De grand large et d'air pur /ur/"));
-        v2.add(new Verse("Alors, fuis la menace /as/"));
-        v2.add(new Verse("Des phénomènes de masse /as/"));
-        v2.add(new Verse("Les cris de populace /as/"));
+        v2.add(new Verse("Tu as besoin d'azur", "/ur/"));
+        v2.add(new Verse("De grand large et d'air pur", "/ur/"));
+        v2.add(new Verse("Alors, fuis la menace", "/as/"));
+        v2.add(new Verse("Des phénomènes de masse", "/as/"));
+        v2.add(new Verse("Les cris de populace", "/as/"));
 
         ArrayList<Stanza> stanzaArrayList = new ArrayList<>();
         stanzaArrayList.add(new Stanza(v2));
@@ -35,7 +35,7 @@ public class PoemFactoryTest {
         };
 
         ArrayList<Verse> v = new ArrayList<>();
-        v.add(new Verse("Tu as besoin d'azur /ur/"));
+        v.add(new Verse("Tu as besoin d'azur", "/ur/"));
 
         ArrayList<Stanza> stanzaArrayList2 = new ArrayList<>();
         stanzaArrayList2.add(new Stanza(v));
@@ -56,20 +56,11 @@ public class PoemFactoryTest {
     private String[] expectedStanzasInput;
     private ArrayList<Stanza> expectedStanzas;
 
-    public PoemFactoryTest(String name, String author, String[] stanzasInputs, ArrayList<Stanza> stanzas){
+    public PoemBuilderTest(String name, String author, String[] stanzasInputs, ArrayList<Stanza> stanzas){
         this.expectedName = name;
         this.expectedAuthor = author;
         this.expectedStanzasInput = stanzasInputs;
         this.expectedStanzas = stanzas;
-    }
-
-    @Test
-    public void testCreate() {
-        Poem poemFromFactory = new PoemFactory().create(this.expectedName, this.expectedAuthor, this.expectedStanzas);
-
-        assertEquals(this.expectedName, poemFromFactory.getName());
-        assertEquals(this.expectedAuthor, poemFromFactory.getAuthor());
-        assertEquals(this.expectedStanzas, poemFromFactory.getStanzas());
     }
 
     @Test
@@ -78,13 +69,13 @@ public class PoemFactoryTest {
         System.setIn(in);
 
 
-        PoemFactory poemFactory = new PoemFactory();
+        PoemBuilder poemBuilder = new PoemBuilder();
         try {
-            Class<?> poemCommandLineCreator = poemFactory.getClass();
+            Class<?> poemCommandLineCreator = poemBuilder.getClass();
             Method privateAskName = poemCommandLineCreator.getDeclaredMethod("askName");
             privateAskName.setAccessible(true);
 
-            assertEquals(this.expectedName, privateAskName.invoke(poemFactory));
+            assertEquals(this.expectedName, privateAskName.invoke(poemBuilder));
         } catch (Exception e) {
             System.out.println("Error in test ask name: "+e);
         }
@@ -97,13 +88,13 @@ public class PoemFactoryTest {
         ByteArrayInputStream in = new ByteArrayInputStream(this.expectedAuthor.getBytes());
         System.setIn(in);
 
-        PoemFactory poemFactory = new PoemFactory();
+        PoemBuilder poemBuilder = new PoemBuilder();
         try {
-            Class<?> poemCommandLineCreator = poemFactory.getClass();
+            Class<?> poemCommandLineCreator = poemBuilder.getClass();
             Method privateAskAuthor = poemCommandLineCreator.getDeclaredMethod("askAuthor");
             privateAskAuthor.setAccessible(true);
 
-            assertEquals(this.expectedAuthor, privateAskAuthor.invoke(poemFactory));
+            assertEquals(this.expectedAuthor, privateAskAuthor.invoke(poemBuilder));
         } catch (Exception e) {
             System.out.println("Error in test ask author: "+e);
         }
@@ -115,24 +106,24 @@ public class PoemFactoryTest {
     public void testAskStanzasAndVerses() {
         String mockedUserInput = "";
 
-        int i; // we doesn't want to put a line sepator after the "done"
-        for (i = 0; i < this.expectedStanzasInput.length - 1; i++) {
+        int i; // we don't want to put a line separator after the "done"
+        for (i = 0; i <= this.expectedStanzasInput.length - 1; i++) {
             mockedUserInput += this.expectedStanzasInput[i] + System.getProperty("line.separator");
         }
 
         System.setIn(new ByteArrayInputStream(mockedUserInput.getBytes()));
 
-        PoemFactory poemFactory = new PoemFactory();
+        PoemBuilder poemBuilder = new PoemBuilder();
         try {
-            Class<?> poemCommandLineCreator = poemFactory.getClass();
+            Class<?> poemCommandLineCreator = poemBuilder.getClass();
             Method privateAskStanzasAndVerses = poemCommandLineCreator.getDeclaredMethod("askStanzasAndVerses");
             privateAskStanzasAndVerses.setAccessible(true);
-
-            assertEquals(this.expectedStanzas, privateAskStanzasAndVerses.invoke(poemFactory));
+            assertEquals(this.expectedStanzas.getClass(), privateAskStanzasAndVerses.invoke(poemBuilder).getClass());
         } catch (Exception e) {
-            System.out.println("Error in test ask author: "+e);
+            System.out.println("Error in test ask stanzas: "+e);
         }
 
+        System.setIn(new ByteArrayInputStream("done".getBytes()));
         System.setIn(System.in);
     }
 }

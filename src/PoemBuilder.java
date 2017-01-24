@@ -4,13 +4,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class PoemFactory {
+public class PoemBuilder {
 
-    public Poem create(String name, String author, ArrayList<Stanza> stanzas) {
-        return new Poem(name, author, stanzas);
-    }
-
-    public Poem createFromCommandLine() {
+    public Poem buildFromCommandLine() {
         String name = this.askName();
         String author = this.askAuthor();
         ArrayList<Stanza> stanzas;
@@ -22,7 +18,7 @@ public class PoemFactory {
             stanzas = new ArrayList<>();
         }
 
-        return this.create(name, author, stanzas);
+        return new Poem(name, author, stanzas);
     }
 
     private String askName() {
@@ -52,11 +48,17 @@ public class PoemFactory {
         BufferedReader bufferedReader = new BufferedReader(isr);
 
         Stanza stanza = new Stanza(new ArrayList<>());
+        Verse v;
         while(!input.equals(END_OF_INPUT)) {
             input = bufferedReader.readLine();
 
             if ( !input.equals(CARRIAGE_RETURN) && !input.equals(END_OF_INPUT)) {
-                stanza.addVerse(new Verse(input));
+                v = Verse.getValidInstance(input);
+                if (v != null) {
+                    stanza.addVerse(v);
+                } else {
+                    System.out.println("<--> Invalid verse. Right format: content /phoneme/ <--> ");
+                }
             } else if ( !stanza.getVerses().isEmpty() ) {
                 // carriage return -> add the stanza to the poem and create a new Stanza
                 stanzas.add(stanza);

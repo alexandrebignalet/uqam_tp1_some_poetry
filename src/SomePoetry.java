@@ -9,7 +9,7 @@ public class SomePoetry {
 
         ArrayList<Poem> poems = new ArrayList<>();
 
-        PoemFactory poemFactory = new PoemFactory();
+        PoemBuilder poemBuilder = new PoemBuilder();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("----------------------------------------------");
@@ -18,7 +18,7 @@ public class SomePoetry {
 
         String input = "";
         while (!input.equals(EXIT_INPUT)) {
-            Poem poem = poemFactory.createFromCommandLine();
+            Poem poem = poemBuilder.buildFromCommandLine();
             System.out.println(poem.toString());
             poems.add(poem);
 
@@ -71,12 +71,9 @@ public class SomePoetry {
         Stanza stanzaChoosen = poem.getStanzas().get(stanzaChoice);
         System.out.print("\nEnter a rhyme schema in CAPS like ABAB: ");
         rhymesSchemaInput = scanner.nextLine();
-        while (rhymesSchemaInput.equals("") && !stanzaChoosen.hasThisRhymesSchema(rhymesSchemaInput)) {
-            if(!rhymesSchemaInput.equals("")) {
-                System.out.println("Wrong ! This stanza hasn't this rhyme schema: " + rhymesSchemaInput
-                        + " but this one: " + stanzaChoosen.getRhymesSchema());
-            }
-            rhymesSchemaInput = scanner.nextLine();
+        if (!stanzaChoosen.hasThisRhymesSchema(rhymesSchemaInput) || rhymesSchemaInput.equals("")) {
+            System.out.println("Wrong ! This stanza hasn't this rhyme schema: " + rhymesSchemaInput
+                    + " but this one: " + stanzaChoosen.getRhymesSchema());
         }
         System.out.println("Right ! This stanza has this rhyme schema: " + rhymesSchemaInput);
     }

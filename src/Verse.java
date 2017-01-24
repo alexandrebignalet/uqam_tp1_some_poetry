@@ -5,14 +5,20 @@ public class Verse {
     private String content;
     private String rhyme;
 
-    public Verse(String verseInput) {
+    public Verse(String content, String rhyme) {
+        this.rhyme = rhyme;
+        this.content = content;
+    }
 
+    public static Verse getValidInstance(String verseInput) {
         Pattern pattern = Pattern.compile(("/(.*?)/"));
         Matcher matcher = pattern.matcher(verseInput);
         if (matcher.find()) {
-            this.rhyme = matcher.group(0);
-            this.content = verseInput.replace(" " + this.rhyme, "");
+            String rhyme = matcher.group(0);
+            String content = verseInput.replace(" " + rhyme, "");
+            return new Verse(content, rhyme);
         }
+        return null;
     }
 
     public String getContent() {

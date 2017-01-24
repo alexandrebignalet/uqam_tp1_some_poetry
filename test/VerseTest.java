@@ -24,6 +24,11 @@ public class VerseTest {
                         "Je brandis mon arme comme Tor son marteau /o/",
                         "Je brandis mon arme comme Tor son marteau",
                         "/o/"
+                },
+                {
+                        "Je brandis mon arme comme Tor son marteau",
+                        null,
+                        null
                 }
         });
     }
@@ -39,21 +44,12 @@ public class VerseTest {
     }
 
     @Test
-    public void testVerseConstructor() {
-        assertEquals(this.expectedRhyme, new Verse(this.input).getRhyme());
-        assertEquals(this.expectedContent, new Verse(this.input).getContent());
-    }
+    public void testVerseConstructorAndValidation() {
+        Verse v = Verse.getValidInstance(this.input);
 
-    @Test
-    public void testVerseConstructorFail() {
-        String verseInput = "A 25 ballets, je pensais être millionaire";
-
-        String expectedContent = "A 25 ballets, je pensais être millionaire";
-        String expectedRhyme = "/ère/";
-
-        Verse v = new Verse(verseInput);
-
-        assertNotEquals(expectedRhyme, v.getRhyme());
-        assertNotEquals(expectedContent, v.getContent());
+        if (v != null) {
+            assertEquals(this.expectedRhyme, v.getRhyme());
+            assertEquals(this.expectedContent, v.getContent());
+        }
     }
 }
